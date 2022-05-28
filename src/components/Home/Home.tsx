@@ -15,6 +15,7 @@ export default function Home() {
   const [post, setPost] = useState<Post[]>([]);
   const [page, setPage] = useState<number>(0);
   const [totalItems, setTotalItems] = useState<number>(1);
+  const [periodicPage, setPeriodicPage] = useState<number>(page);
 
   useEffect(() => {
     (async () => {
@@ -28,9 +29,8 @@ export default function Home() {
   }, [page]);
 
   const getPost = async () => {
-    const pageNo = page+1;
     const res = await axios.get(
-      `https://hn.algolia.com/api/v1/search_by_date?tags=story&page=${pageNo}`
+      `https://hn.algolia.com/api/v1/search_by_date?tags=story&page=${page}`
     );
     setPost(res?.data?.hits);
     setTotalItems(res?.data?.nbPages * res?.data?.hitsPerPage);
@@ -39,7 +39,7 @@ export default function Home() {
   useEffect(() => {
     const timer = setInterval(getPost, 10000);
     return () => clearInterval(timer);
-  }, []);
+  }, [page]);
 
   console.log("post after 10 sec............", post);
 
