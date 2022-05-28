@@ -1,6 +1,7 @@
 import { Pagination } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./Home.module.css";
 
 interface Post {
@@ -9,13 +10,13 @@ interface Post {
   url: string;
   author: string;
   points: number;
+  objectID: string;
 }
 
 export default function Home() {
   const [post, setPost] = useState<Post[]>([]);
   const [page, setPage] = useState<number>(0);
   const [totalItems, setTotalItems] = useState<number>(1);
-  const [periodicPage, setPeriodicPage] = useState<number>(page);
 
   useEffect(() => {
     (async () => {
@@ -41,7 +42,8 @@ export default function Home() {
     return () => clearInterval(timer);
   }, [page]);
 
-  console.log("post after 10 sec............", post);
+  // console.log("post after 10 sec............", post);
+  const navigate = useNavigate();
 
   return (
     <div className={styles.main}>
@@ -55,7 +57,7 @@ export default function Home() {
             <th>Author</th>
           </tr>
           {post?.map((item, index) => (
-            <tr onClick={() => console.log("clicked......", index)}>
+            <tr onClick={() => navigate(`/post/${item?.objectID}`)}>
               <td>{item?.title}</td>
               <td>{item?.url}</td>
               <td>{item?.created_at}</td>
