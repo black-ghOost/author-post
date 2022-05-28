@@ -28,7 +28,7 @@ export default function Home() {
   }, [page]);
 
   const getPost = async () => {
-    const pageNo = page;
+    const pageNo = page+1;
     const res = await axios.get(
       `https://hn.algolia.com/api/v1/search_by_date?tags=story&page=${pageNo}`
     );
